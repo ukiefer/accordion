@@ -1,0 +1,42 @@
+.accordion {
+  border-top: 1px solid cornflowerblue;
+  opacity: 0;
+  transition: opacity 1150ms;
+}
+.accordion--init {
+  opacity: 1;
+}
+.accordion__item {
+  border-bottom: 1px solid cornflowerblue;
+}
+.accordion__header {
+  margin: 0;
+  padding: 0;
+}
+.accordion__button {
+  all: unset;
+  padding: 0.75rem 0;
+  width: 100%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: cornflowerblue;
+}
+.accordion__button--collapsed {
+  color: black;
+}
+.accordion__body {
+  padding-bottom: 1rem;
+}
+.accordion__collapse:not(.accordion__collapse--show) {
+  display: none;
+}
+.accordion__collapse--collapsing {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}
+.accordion__collapse--closing {
+  height: auto;
+  overflow: hidden;
+  transition: height 0.35s ease;
+}/*# sourceMappingURL=accordion.css.map */

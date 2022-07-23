@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akkordeon</title>
+    <link rel="stylesheet" href="accordion.css">
+    <script type="module" src="accordion.js"></script>
+    <script type="module" src="main.js" defer ></script>
+    <style>
+        .container{max-width: 400px;margin: 0 auto;font-family: sans-serif}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="accordion" id="acc1">
+            <div class="accordion__item" data-open>
+              <h2 class="accordion__header">
+                <button class="accordion__button" type="button">
+                  Accordion Item #1
+                </button>
+              </h2>
+              <div class="accordion__collapse">
+                <div class="accordion__body">
+                  <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion__body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h2 class="accordion__header">
+                <button class="accordion__button" type="button">
+                  Accordion Item #2
+                </button>
+              </h2>
+              <div class="accordion__collapse">
+                <div class="accordion__body">
+                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion__body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h2 class="accordion__header">
+                <button class="accordion__button" type="button">
+                  Accordion Item #3
+                </button>
+              </h2>
+              <div class="accordion__collapse">
+                <div class="accordion__body">
+                  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion__body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+        </div>
+        <h2>Next</h2>
+        <div class="accordion">
+            <div class="accordion__item">
+              <h2 class="accordion__header">
+                <button class="accordion__button" type="button">
+                  Accordion Item #A
+                </button>
+              </h2>
+              <div class="accordion__collapse">
+                <div class="accordion__body">
+                  <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion__body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h2 class="accordion__header">
+                <button class="accordion__button collapsed" type="button">
+                  Accordion Item #B
+                </button>
+              </h2>
+              <div class="accordion__collapse">
+                <div class="accordion__body">
+                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion__body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h2 class="accordion__header">
+                <button class="accordion__button collapsed" type="button">
+                  Accordion Item #C
+                </button>
+              </h2>
+              <div class="accordion__collapse"">
+                <div class="accordion__body">
+                  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion__body</code>, though the transition does limit overflow.
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div style="height:100vh"></div>
+</body>
+</html>
