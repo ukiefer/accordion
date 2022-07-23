@@ -4,7 +4,6 @@
  * @author Uwe Kiefer <uwe.kiefer.dev@gmail.com>
  */
 
-
  class Accordion {
     constructor(el, obj = {}) {
         this.el = el
@@ -124,7 +123,6 @@
                 // scroll window
                 const bound = oldItem.header.getBoundingClientRect()
                 const diff = bound.height + bound.y
-                console.log(this._getHeightOfItemsBetween(oldItem, currentItem))
                 if (diff < 0) {
                     window.scrollTo({
                         top: window.scrollY + diff + this._getHeightOfItemsBetween(oldItem, currentItem) - this.options.scrollMarginTop,
