@@ -9,6 +9,7 @@
         this.el = el
         this.options = Object.assign({}, {
             aria: true,
+            singleExpanded: true,
             scrollMarginTop: 0,
         }, obj)
         this.items = []
@@ -60,11 +61,13 @@
     }
 
     setupItem() {
+        let openItems = 0
         let i = 1
         for (const item of this.items) {
             const isOpen = item.item.dataset.hasOwnProperty('open') 
             if (isOpen) {
                 item.collapse.classList.add(Accordion.CLASS_SHOW)
+                openItems++
             } else {
                 item.button.classList.add(Accordion.CLASS_COLLAPSED)
             }
@@ -78,6 +81,10 @@
                 item.collapse.setAttribute('aria-labelledby', idHeading)
             }
             i++
+        }
+        if (openItems > 1) {
+            // use singe expanded if several items are open
+            this.options.singleExpanded = true
         }
     }
 
@@ -119,11 +126,10 @@
         if (currentItem.collapse.classList.contains(Accordion.CLASS_SHOW)) {
             this.hideItem(currentItem)
         } else {
-            if (above > 0) {
+            if (this.options.singleExpanded && above > 0) {
                 // scroll window
                 const bound = oldItem.header.getBoundingClientRect()
                 const diff = bound.height + bound.y - this.options.scrollMarginTop
-                console.log('diff', diff)
                 if (diff < 0) {
                     window.scrollTo({
                         top: window.scrollY + diff + this._getHeightOfItemsBetween(oldItem, currentItem),
@@ -133,7 +139,9 @@
                 }
             }
             this.showItem(currentItem)
-            this.hideItem(oldItem)
+            if (this.options.singleExpanded) {
+                this.hideItem(oldItem)
+            }
         }
     }
 
