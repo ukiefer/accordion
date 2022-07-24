@@ -122,10 +122,11 @@
             if (above > 0) {
                 // scroll window
                 const bound = oldItem.header.getBoundingClientRect()
-                const diff = bound.height + bound.y
+                const diff = bound.height + bound.y - this.options.scrollMarginTop
+                console.log('diff', diff)
                 if (diff < 0) {
                     window.scrollTo({
-                        top: window.scrollY + diff + this._getHeightOfItemsBetween(oldItem, currentItem) - this.options.scrollMarginTop,
+                        top: window.scrollY + diff + this._getHeightOfItemsBetween(oldItem, currentItem),
                         left: 0,
                         behavior: 'smooth'
                     })
