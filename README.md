@@ -44,7 +44,7 @@ To render an accordion that’s expanded, add the data attribute ``data-open`` o
     </div>
 </div>
 ```
-Initialize all accordions on a page
+Initialize all accordions of a page
 ```
 import Accordion from './accordion.js'
 
