@@ -43,7 +43,7 @@
                 body: item.querySelector(Accordion.SELECTOR_BODY)
             });
         }
-        this.setupItem()
+        this.setupItems()
         this.bindEvents()
         this.el.classList.add('accordion--init')
     }
@@ -60,7 +60,7 @@
         }
     }
 
-    setupItem() {
+    setupItems() {
         let openItems = 0
         let i = 1
         for (const item of this.items) {
