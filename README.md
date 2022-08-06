@@ -60,7 +60,7 @@ You can setup an accordion with options:
 const a = new Accordion(document.querySelector('.accordion'), {
     aria: true,
     singleExpanded: true,
-    scrollMarginTop: 0,
+    scrollPaddingTop: 0,
 })
 ```
 
@@ -78,11 +78,11 @@ Default: `true`
 Whether to open only one item of the accordion at a time.
 
 
-### scrollMarginTop
+### scrollPaddingTop
 Type: `Integer`  
 Default: `0`
 
-Distance of the scroll-margin-top in pixels to be taken into account.
+Distance of the scroll-padding-top in pixels to be taken into account.
 
 ## Accessibility
 

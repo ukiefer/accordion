@@ -1,6 +1,11 @@
+:root {
+  --header-height: 50px;
+  scroll-padding-top: calc(var(--header-height) + 10px);
+  scroll-behavior: smooth;
+}
+
 html {
   font-size: 62.5%;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -10,7 +15,7 @@ body {
 
 header {
   width: 100%;
-  height: 50px;
+  height: var(--header-height);
   position: fixed;
   top: 0;
   font-family: sans-serif;
@@ -29,8 +34,4 @@ main {
   margin: 50px auto;
   font-size: 1.6rem;
   font-family: sans-serif;
-}
-
-h2[id] {
-  scroll-margin-top: 50px;
 }/*# sourceMappingURL=main.css.map */

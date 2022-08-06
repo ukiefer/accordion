@@ -10,7 +10,7 @@
         this.options = Object.assign({}, {
             aria: true,
             singleExpanded: true,
-            scrollMarginTop: 0,
+            scrollPaddingTop: 0,
         }, obj)
         this.items = []
         this._isTransitioningShow = false
@@ -129,7 +129,7 @@
             if (this.options.singleExpanded && above > 0) {
                 // scroll window
                 const bound = oldItem.header.getBoundingClientRect()
-                const diff = bound.height + bound.y - this.options.scrollMarginTop
+                const diff = bound.height + bound.y - this.options.scrollPaddingTop
                 if (diff < 0) {
                     window.scrollTo({
                         top: window.scrollY + diff + this._getHeightOfItemsBetween(oldItem, currentItem),
