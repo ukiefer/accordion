@@ -11,10 +11,8 @@ Create an accordion by using the following markup:
                 Accordion Item #1
             </button>
         </div>
-        <div class="accordion__collapse">
-            <div class="accordion__body">
-                Item Body #1
-            </div>
+        <div class="accordion__body">
+            Item Body #1
         </div>
     </div>
     <div class="accordion__item">
@@ -23,10 +21,8 @@ Create an accordion by using the following markup:
                 Accordion Item #2
             </button>
         </div>
-        <div class="accordion__collapse">
-            <div class="accordion__body">
-                Item Body #2
-            </div>
+        <div class="accordion__body">
+            Item Body #2
         </div>
     </div>
 </div>
@@ -39,7 +35,7 @@ To render an accordion that’s expanded, add the data attribute ``data-open`` o
     <div class="accordion__header">
         ...
     </div>
-    <div class="accordion__collapse">
+    <div class="accordion__body">
         ...
     </div>
 </div>
@@ -50,8 +46,7 @@ import Accordion from './accordion.js'
 
 // get all accordions
 for (const accordion of [].concat(...document.querySelectorAll('.accordion'))) {
-    const a = new Accordion(accordion)
-    a.initialize()
+    new Accordion(accordion).initialize()
 }
 ```
 ## Options

@@ -26,23 +26,19 @@
         cursor: pointer
         color: cornflowerblue
 
-        &--collapsed
+        .accordion__item[data-open] &
             color: black
 
     &__body
         padding-bottom: 1.6rem
 
     &__collapse
-        &:not(&--show)
-            display: none
+        display: grid
+        grid-template-rows: 0fr
+        transition: grid-template-rows 300ms ease
 
-        &--collapsing
-            height: 0
+        &-inner
             overflow: hidden
-            transition: height .35s ease
-
-        &--closing
-            height: auto
-            overflow: hidden
-            transition: height .35s ease
-
+            
+        .accordion__item[data-open] &
+            grid-template-rows: 1fr

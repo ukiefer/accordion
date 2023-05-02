@@ -24,22 +24,20 @@
   cursor: pointer;
   color: cornflowerblue;
 }
-.accordion__button--collapsed {
+.accordion__item[data-open] .accordion__button {
   color: black;
 }
 .accordion__body {
   padding-bottom: 1.6rem;
 }
-.accordion__collapse:not(.accordion__collapse--show) {
-  display: none;
+.accordion__collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms ease;
 }
-.accordion__collapse--collapsing {
-  height: 0;
+.accordion__collapse-inner {
   overflow: hidden;
-  transition: height 0.35s ease;
 }
-.accordion__collapse--closing {
-  height: auto;
-  overflow: hidden;
-  transition: height 0.35s ease;
+.accordion__item[data-open] .accordion__collapse {
+  grid-template-rows: 1fr;
 }/*# sourceMappingURL=accordion.css.map */

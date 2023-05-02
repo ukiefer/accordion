@@ -12,7 +12,6 @@
             singleExpanded: true,
             scrollPaddingTop: 0,
         }, obj)
-        this.items = []
         this._isTransitioningShow = false
         this._isTransitioningHide = false
         
@@ -23,25 +22,29 @@
     static get SELECTOR_BODY() { return '.accordion__body' }
     static get SELECTOR_BUTTON() { return '.accordion__button' }
     static get SELECTOR_COLLAPSE() { return '.accordion__collapse' }
+    static get SELECTOR_COLLAPSE_INNER() { return '.accordion__collapse-inner' }
     static get SELECTOR_HEADER() { return '.accordion__header' }
     static get SELECTOR_ITEM() { return '.accordion__item' }
 
     // static modifire classes
-    static get CLASS_CLOSING() { return 'accordion__collapse--closing' }
-    static get CLASS_COLLAPSED() { return 'accordion__button--collapsed' }
-    static get CLASS_COLLAPSING() { return 'accordion__collapse--collapsing' }
-    static get CLASS_SHOW() { return 'accordion__collapse--show' }
+    // static get CLASS_CLOSING() { return 'accordion__collapse--closing' }
+    // static get CLASS_COLLAPSED() { return 'accordion__button--collapsed' }
+    // static get CLASS_COLLAPSING() { return 'accordion__collapse--collapsing' }
+    // static get CLASS_SHOW() { return 'accordion__collapse--show' }
  
     initialize() {
         this.id = this.el.id || `accordion-${Math.floor(Math.random() * Date.now())}`
-        for (const item of [].concat(...this.el.querySelectorAll(Accordion.SELECTOR_ITEM))) {
-            this.items.push({
-                item: item,
-                header: item.querySelector(Accordion.SELECTOR_HEADER),
-                button: item.querySelector(Accordion.SELECTOR_BUTTON),
-                collapse: item.querySelector(Accordion.SELECTOR_COLLAPSE),
-                body: item.querySelector(Accordion.SELECTOR_BODY)
-            });
+        this.items = Array.prototype.slice.call(this.el.children)
+        for (const item of this.items) {
+            const body = item.querySelector(Accordion.SELECTOR_BODY)
+            const collapse = document.createElement('div')
+            collapse.className = 'accordion__collapse'
+            const inner = document.createElement('div')
+            inner.className = 'accordion__collapse-inner'
+
+            body.parentElement.appendChild(collapse)
+            collapse.appendChild(inner)
+            inner.appendChild(body)
         }
         this.setupItems()
         this.bindEvents()
@@ -50,13 +53,13 @@
 
     destroy() {
         for (const item of this.items) {
-            item.button.removeEventListener('click', this.toogleItem)
+            item.querySelector(Accordion.SELECTOR_BUTTON).removeEventListener('click', this.toogleItem)
         }
     }
 
     bindEvents() {
         for (const item of this.items) {
-            item.button.addEventListener('click', this.toogleItem)
+            item.querySelector(Accordion.SELECTOR_BUTTON).addEventListener('click', this.toogleItem)
         }
     }
 
@@ -64,28 +67,32 @@
         let openItems = 0
         let i = 1
         for (const item of this.items) {
-            const isOpen = item.item.dataset.hasOwnProperty('open') 
+            const isOpen = item.dataset.hasOwnProperty('open') 
             if (isOpen) {
-                item.collapse.classList.add(Accordion.CLASS_SHOW)
                 openItems++
-            } else {
-                item.button.classList.add(Accordion.CLASS_COLLAPSED)
             }
             if (this.options.aria) {
-                const idHeading = item.header.id || `${this.id}-${i}-heading`
-                const idCollapse = item.collapse.id || `${this.id}-${i}-collapse`
-                item.header.id = idHeading
-                item.collapse.id = idCollapse
-                item.button.setAttribute('aria-controls', idCollapse)
-                item.button.setAttribute('aria-expanded', isOpen)
-                item.collapse.setAttribute('aria-labelledby', idHeading)
+                const button = item.querySelector(Accordion.SELECTOR_BUTTON)
+                const collapse = item.querySelector(Accordion.SELECTOR_COLLAPSE)
+                const header = item.querySelector(Accordion.SELECTOR_HEADER)
+
+                const idHeading = header.id || `${this.id}-${i}-heading`
+                header.id = idHeading
+                collapse.setAttribute('aria-labelledby', idHeading)
+
+                const idCollapse = collapse.id || `${this.id}-${i}-collapse`
+                collapse.id = idCollapse
+                button.setAttribute('aria-controls', idCollapse)
+
+                button.setAttribute('aria-expanded', isOpen)
             }
             i++
         }
         if (openItems > 1) {
             // use singe expanded if several items are open
-            this.options.singleExpanded = true
+            this.options.singleExpanded = false
         }
+        console.log("🚀 ~ file: accordion.js:94 ~ Accordion ~ setupItems ~ this.options.singleExpanded:", openItems, this.options.singleExpanded)
     }
 
     _getHeightOfItemsBetween(first, last) {
@@ -96,7 +103,7 @@
                 doAdd = false
             }
             if (doAdd) {
-                height += item.header.clientHeight
+                height += item.querySelector(Accordion.SELECTOR_HEADER).clientHeight
             }
             if (item === first) {
                 doAdd = true
@@ -104,91 +111,50 @@
         }
         return height
     }
-
-    toogleItem(e) {
-        const currentItemElement = e.target.closest(Accordion.SELECTOR_ITEM)
-        let currentItem
-        let oldItem
-        let doCheckAbove = true
-        let above = 0
-        for (const item of this.items) {
-            if (item.item == currentItemElement) {
-                currentItem = item
-                doCheckAbove = false
-            } else if (item.collapse.classList.contains(Accordion.CLASS_SHOW)) {
-                oldItem = item
-                if (doCheckAbove) {
-                    above += 1
-                }
-            }
-        }
-
-        if (currentItem.collapse.classList.contains(Accordion.CLASS_SHOW)) {
+        
+    toogleItem({target}) {
+        const currentItem = target.closest(Accordion.SELECTOR_ITEM)
+        if (currentItem.dataset.hasOwnProperty('open')) {      
             this.hideItem(currentItem)
         } else {
-            if (this.options.singleExpanded && above > 0) {
-                // scroll window
-                const bound = oldItem.header.getBoundingClientRect()
-                const diff = bound.height + bound.y - this.options.scrollPaddingTop
-                if (diff < 0) {
-                    window.scrollTo({
-                        top: window.scrollY + diff + this._getHeightOfItemsBetween(oldItem, currentItem),
-                        left: 0,
-                        behavior: 'smooth'
-                    })
+            if (this.options.singleExpanded) {
+                const openItem = this.el.querySelector('[data-open]')
+                if (openItem && this.items.indexOf(openItem) < this.items.indexOf(currentItem)) {
+                    // scroll window
+                    const bound = openItem.querySelector(Accordion.SELECTOR_HEADER).getBoundingClientRect()
+                    const diff = bound.height + bound.y - this.options.scrollPaddingTop
+                    if (diff < 0) {
+                        window.scrollTo({
+                            top: window.scrollY + diff + this._getHeightOfItemsBetween(openItem, currentItem),
+                            left: 0,
+                            behavior: 'smooth'
+                        })
+                    }
                 }
+                this.hideItem(openItem)
             }
             this.showItem(currentItem)
-            if (this.options.singleExpanded) {
-                this.hideItem(oldItem)
-            }
         }
     }
 
     showItem(item) {
         if (!item) return
-        if (this._isTransitioningShow) return
 
-        this._isTransitioningShow = true
-        item.button.classList.remove(Accordion.CLASS_COLLAPSED)
         if (this.options.aria) {
-            item.button.setAttribute('aria-expanded', true)
+            item.querySelector(Accordion.SELECTOR_BUTTON).setAttribute('aria-expanded', true)
         }
 
-        item.collapse.classList.add(Accordion.CLASS_COLLAPSING, Accordion.CLASS_SHOW)
-        item.collapse.addEventListener('transitionend', () => {
-            item.collapse.classList.remove(Accordion.CLASS_COLLAPSING)
-            item.collapse.style = ''
-            this._isTransitioningShow = false
-        }, {once: true})
-
-        setTimeout(() => {
-            item.collapse.style = `height:${item.body.scrollHeight}px`
-        }, 1)
+        item.setAttribute('data-open', '')
     }
 
     hideItem(item) {
         if (!item) return
-        if (this._isTransitioningHide) return
-        
-        this._isTransitioningHide = true
-        item.collapse.addEventListener('transitionend', () => {
-            item.collapse.classList.remove(Accordion.CLASS_CLOSING, Accordion.CLASS_SHOW)
-            item.collapse.style = ''
-            this._isTransitioningHide = false
-        }, {once: true})
 
-        item.button.classList.add(Accordion.CLASS_COLLAPSED)
         if (this.options.aria) {
-            item.button.setAttribute('aria-expanded', false)
+            item.querySelector(Accordion.SELECTOR_BUTTON).setAttribute('aria-expanded', false)
         }
 
-        item.collapse.style = `height:${item.body.scrollHeight}px`
-        item.collapse.classList.add(Accordion.CLASS_CLOSING)
-
-        setTimeout(() => {
-            item.collapse.style = `height:0`
-        }, 1)
+        item.removeAttribute('data-open')
     }
  }
  
